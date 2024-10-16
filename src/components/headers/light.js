@@ -1,16 +1,16 @@
-import React from "react";
-import { motion } from "framer-motion";
-import tw from "twin.macro";
-import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { IoCart } from "react-icons/io5";
-import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
+import React from 'react';
+import { motion } from 'framer-motion';
+import tw from 'twin.macro';
+import styled from 'styled-components';
+import { css } from 'styled-components/macro'; //eslint-disable-line
+import { IoCart } from 'react-icons/io5';
+import useAnimatedNavToggler from '../../helpers/useAnimatedNavToggler.js';
 
-import logo from "../../images/cek-toko-sebelah.png";
-import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
-import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
-import { useCart } from "react-use-cart";
-import { Link } from "react-router-dom";
+import logo from '../../images/logoPersegipanjang-removebg-preview.png';
+import { ReactComponent as MenuIcon } from 'feather-icons/dist/icons/menu.svg';
+import { ReactComponent as CloseIcon } from 'feather-icons/dist/icons/x.svg';
+import { useCart } from 'react-use-cart';
+import { Link } from 'react-router-dom';
 
 const Header = tw.header`
   flex justify-between items-center
@@ -74,7 +74,7 @@ export default ({
   logoLink,
   links,
   className,
-  collapseBreakpointClass = "lg",
+  collapseBreakpointClass = 'lg',
 }) => {
   /*
    * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
@@ -100,19 +100,19 @@ export default ({
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink>
-        <Link to={"/"}>Home</Link>
+        <Link to={'/'}>Home</Link>
       </NavLink>
       <NavLink>
-        <Link to={"/products"}>Products</Link>
+        <Link to={'/products'}>Products</Link>
       </NavLink>
       <NavLink>
         <Link to="/about-us">About Us</Link>
       </NavLink>
       <NavLink>
-        <Link to={"/contact-us"}>Contact Us</Link>
+        <Link to={'/contact-us'}>Contact Us</Link>
       </NavLink>
       <NavLink>
-        <Link to={"/orders"}>Orders</Link>
+        <Link to={'/orders'}>Orders</Link>
       </NavLink>
       <NavLink tw="lg:ml-12!">
         <Link to="/cart">
@@ -124,7 +124,7 @@ export default ({
       </NavLink>
 
       <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">
-        <Link to={"/login"}>Login</Link>
+        <Link to={'/login'}>Login</Link>
       </PrimaryLink>
     </NavLinks>,
   ];
@@ -143,7 +143,7 @@ export default ({
   links = links || defaultLinks;
 
   return (
-    <Header className={className || "header-light"}>
+    <Header className={className || 'header-light'}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
         {logoLink}
         {links}
@@ -155,7 +155,7 @@ export default ({
       >
         {logoLink}
         <MobileNavLinks
-          initial={{ x: "150%", display: "none" }}
+          initial={{ x: '150%', display: 'none' }}
           animate={animation}
           css={collapseBreakpointCss.mobileNavLinks}
         >
@@ -163,7 +163,7 @@ export default ({
         </MobileNavLinks>
         <NavToggle
           onClick={toggleNavbar}
-          className={showNavLinks ? "open" : "closed"}
+          className={showNavLinks ? 'open' : 'closed'}
         >
           {showNavLinks ? (
             <CloseIcon tw="w-6 h-6" />

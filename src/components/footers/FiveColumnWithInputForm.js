@@ -1,13 +1,13 @@
-import React from "react";
-import tw from "twin.macro";
-import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
+import React from 'react';
+import tw from 'twin.macro';
+import styled from 'styled-components';
+import { css } from 'styled-components/macro'; //eslint-disable-line
+import { PrimaryButton as PrimaryButtonBase } from 'components/misc/Buttons.js';
 
-import LogoImage from "images/logo.svg";
-import { ReactComponent as FacebookIcon } from "images/facebook-icon.svg";
-import { ReactComponent as TwitterIcon } from "images/twitter-icon.svg";
-import { ReactComponent as YoutubeIcon } from "images/youtube-icon.svg";
+import LogoImage from 'images/logo.svg';
+import { ReactComponent as FacebookIcon } from 'images/facebook-icon.svg';
+import { ReactComponent as TwitterIcon } from 'images/twitter-icon.svg';
+import { ReactComponent as YoutubeIcon } from 'images/youtube-icon.svg';
 
 const Content = tw.div`max-w-screen-xl mx-auto relative z-10`;
 const SixColumns = tw.div`flex flex-wrap text-center sm:text-left justify-center sm:justify-start md:justify-between -mt-12`;
@@ -73,7 +73,7 @@ export default ({ background }) => {
               </LinkListItem>
             </LinkList>
           </Column>
-          
+
           <SubscribeNewsletterColumn>
             <SubscribeNewsletterContainer>
               <ColumnHeading>Subscribe to our Newsletter</ColumnHeading>

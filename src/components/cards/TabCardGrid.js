@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import tw from "twin.macro";
-import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
-import { SectionHeading } from "components/misc/Headings.js";
-import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
-import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-5.svg";
-import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-7.svg";
-import { useCart } from "react-use-cart";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useProductsContext } from "context/product_context";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import tw from 'twin.macro';
+import styled from 'styled-components';
+import { css } from 'styled-components/macro'; //eslint-disable-line
+import { Container, ContentWithPaddingXl } from 'components/misc/Layouts.js';
+import { SectionHeading } from 'components/misc/Headings.js';
+import { PrimaryButton as PrimaryButtonBase } from 'components/misc/Buttons.js';
+import { ReactComponent as SvgDecoratorBlob1 } from 'images/svg-decorator-blob-5.svg';
+import { ReactComponent as SvgDecoratorBlob2 } from 'images/svg-decorator-blob-7.svg';
+import { useCart } from 'react-use-cart';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useProductsContext } from 'context/product_context';
+import { data } from 'helpers/utils';
 
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row`;
 const Header = tw(SectionHeading)``;
@@ -54,7 +55,7 @@ const CardButton = tw(
 const CardImageContainer = styled.div`
   ${(props) =>
     css`
-      background-image: url("${props.image}");
+      background-image: url('${props.image}');
     `}
   ${tw`h-56 xl:h-64 bg-center bg-cover relative rounded-t`}
   position: relative;
@@ -80,31 +81,32 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
   ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-80 w-80 opacity-15 transform -translate-x-2/3 text-primary-500`}
 `;
 
-export default ({ heading = "Checkout the Menu" }) => {
+export default ({ heading = 'Checkout the Menu' }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [tabsKeys, setTabsKeys] = useState([
-    "Best Sellers",
-    "Main",
-    "Soup",
-    "Desserts",
+    'Best Sellers',
+    'PC Rakitan',
+    'Laptop',
+    'Gaming Acc',
   ]);
-  const [activeTab, setActiveTab] = useState("Best Sellers");
+  const [activeTab, setActiveTab] = useState('Best Sellers');
   const { addItem, updateItemQuantity, items } = useCart();
-  const { products } = useProductsContext();
-  const getRandomCards = () => {
-    const cards = products;
-    return cards.sort(() => Math.random() - 0.5);
-  };
+  // const { products } = useProductsContext();
+  const products = data;
 
   const tabs = {
-    "Best Sellers": products
+    'Best Sellers': products
       .sort((a, b) => b.stars - a.stars) // Sort by stars in descending order
       .slice(0, 8), // Get the top 8 items
-    Main: getRandomCards(), // Perbaharui filter berdasarkan Kaos
-    Soup: getRandomCards(), // Perbaharui filter berdasarkan Sepatu
-    Desserts: getRandomCards(), // Perbaharui filter berdasarkan Jaket
+    'PC Rakitan': products.filter(
+      (product) => product.category === 'PC Rakitan'
+    ),
+    Laptop: products.filter((product) => product.category === 'Laptop'),
+    'Gaming Acc': products.filter(
+      (product) => product.category === 'Gaming Acc'
+    ),
   };
 
   const openModal = (item) => {
@@ -145,7 +147,7 @@ export default ({ heading = "Checkout the Menu" }) => {
       toast.success(
         `Added ${quantityNumber} ${selectedItem.name}(s) to the cart`,
         {
-          position: "top-center",
+          position: 'top-center',
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -182,17 +184,17 @@ export default ({ heading = "Checkout the Menu" }) => {
               current: {
                 opacity: 1,
                 scale: 1,
-                display: "flex",
+                display: 'flex',
               },
               hidden: {
                 opacity: 0,
                 scale: 0.8,
-                display: "none",
+                display: 'none',
               },
             }}
             transition={{ duration: 0.4 }}
-            initial={activeTab === tabKey ? "current" : "hidden"}
-            animate={activeTab === tabKey ? "current" : "hidden"}
+            initial={activeTab === tabKey ? 'current' : 'hidden'}
+            animate={activeTab === tabKey ? 'current' : 'hidden'}
           >
             {tabs[tabKey].map((card, index) => (
               <CardContainer key={index}>
@@ -204,7 +206,7 @@ export default ({ heading = "Checkout the Menu" }) => {
                 >
                   <Link to={`/detail-product/${card.id}`}>
                     <CardImageContainer
-                      image={card.image}
+                      image={card.imageSrc}
                       className="flex items-center justify-center"
                     />
                   </Link>
@@ -257,83 +259,83 @@ const getRandomCards = () => {
   const cards = [
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Chicken Chilled",
-      content: "Chicken Main Course",
-      price: "$5.99",
-      rating: "5.0",
-      reviews: "87",
-      url: "#",
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Chicken Chilled',
+      content: 'Chicken Main Course',
+      price: '$5.99',
+      rating: '5.0',
+      reviews: '87',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1582254465498-6bc70419b607?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Samsa Beef",
-      content: "Fried Mexican Beef",
-      price: "$3.99",
-      rating: "4.5",
-      reviews: "34",
-      url: "#",
+        'https://images.unsplash.com/photo-1582254465498-6bc70419b607?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Samsa Beef',
+      content: 'Fried Mexican Beef',
+      price: '$3.99',
+      rating: '4.5',
+      reviews: '34',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1565310022184-f23a884f29da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Carnet Nachos",
-      content: "Chilli Crispy Nachos",
-      price: "$3.99",
-      rating: "3.9",
-      reviews: "26",
-      url: "#",
+        'https://images.unsplash.com/photo-1565310022184-f23a884f29da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Carnet Nachos',
+      content: 'Chilli Crispy Nachos',
+      price: '$3.99',
+      rating: '3.9',
+      reviews: '26',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Guacamole Mex",
-      content: "Mexican Chilli",
-      price: "$3.99",
-      rating: "4.2",
-      reviews: "95",
-      url: "#",
+        'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Guacamole Mex',
+      content: 'Mexican Chilli',
+      price: '$3.99',
+      rating: '4.2',
+      reviews: '95',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1550461716-dbf266b2a8a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Chillie Cake",
-      content: "Deepfried Chicken",
-      price: "$2.99",
-      rating: "5.0",
-      reviews: "61",
-      url: "#",
+        'https://images.unsplash.com/photo-1550461716-dbf266b2a8a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Chillie Cake',
+      content: 'Deepfried Chicken',
+      price: '$2.99',
+      rating: '5.0',
+      reviews: '61',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327??ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Nelli",
-      content: "Hamburger & Fries",
-      price: "$7.99",
-      rating: "4.9",
-      reviews: "89",
-      url: "#",
+        'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327??ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Nelli',
+      content: 'Hamburger & Fries',
+      price: '$7.99',
+      rating: '4.9',
+      reviews: '89',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Jalapeno Poppers",
-      content: "Crispy Soyabeans",
-      price: "$8.99",
-      rating: "4.6",
-      reviews: "12",
-      url: "#",
+        'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Jalapeno Poppers',
+      content: 'Crispy Soyabeans',
+      price: '$8.99',
+      rating: '4.6',
+      reviews: '12',
+      url: '#',
     },
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1473093226795-af9932fe5856?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
-      title: "Cajun Chicken",
-      content: "Roasted Chicken & Egg",
-      price: "$7.99",
-      rating: "4.2",
-      reviews: "19",
-      url: "#",
+        'https://images.unsplash.com/photo-1473093226795-af9932fe5856?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+      title: 'Cajun Chicken',
+      content: 'Roasted Chicken & Egg',
+      price: '$7.99',
+      rating: '4.2',
+      reviews: '19',
+      url: '#',
     },
   ];
 
