@@ -55,8 +55,10 @@ export default () => {
       <DownloadApp
         text={
           <>
-            People around you are ordering delicious meals using the{' '}
-            <HighlightedTextInverse>Treact App.</HighlightedTextInverse>
+            Temukan produk terbaik kami di{' '}
+            <HighlightedTextInverse>Shopee</HighlightedTextInverse> dan{' '}
+            <HighlightedTextInverse>Tokopedia</HighlightedTextInverse>. dan
+            dapatkan penawaran menarik!
           </>
         }
       />

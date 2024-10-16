@@ -1,7 +1,14 @@
+import pc10jt from '../images/pc10jt.png';
+import RogZepfiruz from '../images/ROG Zepfiruz.png';
+import LogitechG305 from '../images/Logitech G305.png';
+import HyperXHHSS1C from '../images/HyperX HHSS1C.png';
+import StrixG16 from '../images/ASUS ROG Strix G16.png';
+import Legion5 from '../images/Legion5.png';
+import RazerOrnata from '../images/RazerOrnata.png';
+import Pc20jt2 from '../images/Pc20jt2.png';
 export const data = [
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${pc10jt}`,
     name: 'Rakitan 10jt',
     company: 'Chicken Main Course',
     category: 'PC Rakitan',
@@ -14,8 +21,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1582254465498-6bc70419b607?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${RogZepfiruz}`,
     name: 'ROG Zepfiruz',
     company: 'Fried Mexican Beef',
     category: 'Laptop',
@@ -28,8 +34,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1565310022184-f23a884f29da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${LogitechG305}`,
     name: 'Logitech G305',
     company: 'Chilli Crispy Nachos',
     category: 'Gaming Acc',
@@ -42,8 +47,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${Pc20jt2}`,
     name: 'Rakitan 20jt',
     company: 'Mexican Chilli',
     category: 'PC Rakitan',
@@ -56,8 +60,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1550461716-dbf266b2a8a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${HyperXHHSS1C}`,
     name: 'HyperX HHSS1C',
     company: 'Deepfried Chicken',
     category: 'Gaming Acc',
@@ -70,8 +73,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327??ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${StrixG16}`,
     name: 'ASUS ROG Strix G16 ',
     company: 'Hamburger & Fries',
     category: 'Laptop',
@@ -84,8 +86,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${Legion5}`,
     name: 'Lenovo Legion 5',
     company: 'Crispy Soyabeans',
     category: 'Laptop',
@@ -98,8 +99,7 @@ export const data = [
     description: 'testing satu dua tiga',
   },
   {
-    imageSrc:
-      'https://images.unsplash.com/photo-1473093226795-af9932fe5856?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+    imageSrc: `${RazerOrnata}`,
     name: 'Razer Ornata V3 Mecha',
     company: 'Roasted Chicken & Egg',
     category: 'Gaming Acc',

@@ -1,11 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import tw from "twin.macro";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { ContentWithPaddingXl, Container } from "components/misc/Layouts.js";
-import { SectionHeading as Heading, Subheading as SubheadingBase } from "components/misc/Headings.js";
-import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
-import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
+import React from 'react';
+import styled from 'styled-components';
+import tw from 'twin.macro';
+import { css } from 'styled-components/macro'; //eslint-disable-line
+import { ContentWithPaddingXl, Container } from 'components/misc/Layouts.js';
+import {
+  SectionHeading as Heading,
+  Subheading as SubheadingBase,
+} from 'components/misc/Headings.js';
+import { ReactComponent as SvgDecoratorBlob1 } from 'images/svg-decorator-blob-7.svg';
+import { ReactComponent as SvgDecoratorBlob2 } from 'images/svg-decorator-blob-8.svg';
 
 const Subheading = tw(SubheadingBase)`text-center`;
 const Testimonials = tw.div`flex flex-col lg:flex-row items-center lg:items-stretch`;
@@ -23,17 +26,28 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 `;
 
 export default ({
-  subheading = "Testimonials",
+  subheading = 'Testimonials',
   heading = "Customer's Review",
   testimonials = [
     {
       imageSrc:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
-      quote:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      customerName: "Charlotte Hale"
-    }
-  ]
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80',
+      quote: 'Keren rakit 10jt Bisa maen WUKONG 4k 60 fps',
+      customerName: 'Charlotte Hale',
+    },
+    {
+      imageSrc:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80',
+      quote: 'Seller terpercaya, barang aman sampai tujuan',
+      customerName: 'Charlotte Hale',
+    },
+    {
+      imageSrc:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80',
+      quote: 'Barangnya sampai dengan mulus',
+      customerName: 'Charlotte Hale',
+    },
+  ],
 }) => {
   return (
     <Container>
