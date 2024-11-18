@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Header from "../components/headers/light";
-import Footer from "../components/footers/FiveColumnWithInputForm.js";
-import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-import tw from "twin.macro";
-import { useParams } from "react-router-dom";
-import { useCart } from "react-use-cart";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { formatPrice } from "helpers/helpers";
-import { FaStar, FaStarHalf, FaCheck } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import Header from '../components/headers/light';
+import Footer from '../components/footers/FiveColumnWithInputForm.js';
+import AnimationRevealPage from 'helpers/AnimationRevealPage.js';
+import tw from 'twin.macro';
+import { useParams } from 'react-router-dom';
+import { useCart } from 'react-use-cart';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { formatPrice } from 'helpers/helpers';
+import { FaStar, FaStarHalf, FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { useProductsContext } from 'context/product_context';
+import { data } from 'helpers/utils';
 
 const DetailProduct = () => {
   const { id } = useParams();
   const { addItem, items, updateItemQuantity } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [product, setProduct] = useState({});
+  const { product, getProductById, setProduct } = useProductsContext();
   const [showModal, setShowModal] = useState(false);
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -51,13 +53,38 @@ const DetailProduct = () => {
   const CancelButton = tw.button`text-sm mt-4 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md ml-5 focus:outline-none cursor-pointer`;
 
   const handleAddToCart = () => {
-    if (selectedItem && selectedColor) {
-      // Lengkapi code berikut
+    // if (selectedItem && selectedColor) {
+    //   // Lengkapi code berikut
+    //   addItem(selectedItem, quantity);
+    //   toast.success(`${selectedItem.item.name} add to cart`);
+    //   setShowModal(false);
+    // } else {
+    //   toast.error(`Sorry stock avaible ${selectedItem.stock} only`);
+    // }
+    if (selectedItem) {
+      // Cek apakah produk memiliki warna
+      if (selectedItem.colors.length > 0 && !selectedColor) {
+        toast.error('Please select a color.');
+      }
+      // Cek apakah kuantitas melebihi stok
+      else if (quantity > selectedItem.stock) {
+        toast.error('Quantity exceeds available stock.');
+      } else {
+        // Jika tidak melebihi stok dan validasi warna lolos, tambahkan ke cart
+        addItem(selectedItem, quantity);
+        toast.success(`${selectedItem.name} added to cart`);
+        setShowModal(false);
+      }
+    } else {
+      toast.error(`Sorry, product is unavailable.`);
     }
   };
 
   useEffect(() => {
     // Your code here
+    // getProductById(id);
+    const findProduct = data.find((item) => item.id.toString() === id);
+    setProduct(findProduct);
   }, [id]);
 
   const handleChangePrice = () => {
@@ -75,7 +102,7 @@ const DetailProduct = () => {
 
   return (
     <AnimationRevealPage>
-      <Header className={"mb-8"} />
+      <Header className={'mb-8'} />
 
       <Container>
         <Content>
@@ -90,7 +117,7 @@ const DetailProduct = () => {
               {Array.isArray(product.images) && product.images.length > 0 && (
                 <>
                   <ProductImage
-                    src={product.images[mainImageIndex].url}
+                    src={product.images[mainImageIndex]}
                     alt={product.name}
                   />
                 </>
@@ -100,12 +127,12 @@ const DetailProduct = () => {
                   {product.images.map((image, index) => (
                     <img
                       key={index}
-                      src={image.url}
+                      src={image}
                       alt={`${product.name} - ${index + 1}`}
                       className={`h-20 w-20 rounded cursor-pointer ${
                         index === mainImageIndex
-                          ? "border-2 border-red-500"
-                          : ""
+                          ? 'border-2 border-red-500'
+                          : ''
                       }`}
                       onClick={() => changeMainImage(index)}
                     />
@@ -115,7 +142,7 @@ const DetailProduct = () => {
             </div>
 
             <ProductInfo>
-              <Title>Nama Product </Title>
+              <Title>{product.name}</Title>
               <RatingReviews>
                 <div className="flex items-center justify-center md:justify-normal">
                   {product.stars}
@@ -129,12 +156,12 @@ const DetailProduct = () => {
                         <span key={index} className="my-auto ">
                           {starValue <= product.stars ? (
                             isHalfStar ? (
-                              <FaStarHalf style={{ color: "#fbbf24" }} />
+                              <FaStarHalf style={{ color: '#fbbf24' }} />
                             ) : (
-                              <FaStar style={{ color: "#fbbf24" }} />
+                              <FaStar style={{ color: '#fbbf24' }} />
                             )
                           ) : (
-                            <FaStar style={{ color: "#d1d5db" }} />
+                            <FaStar style={{ color: '#d1d5db' }} />
                           )}
                         </span>
                       );
@@ -159,8 +186,8 @@ const DetailProduct = () => {
                           key={index}
                           className={`relative w-8 h-8 rounded-full cursor-pointer border-2 ${
                             selectedColor === color
-                              ? "border-red-500"
-                              : "border-transparent"
+                              ? 'border-red-500'
+                              : 'border-transparent'
                           }`}
                           style={{ backgroundColor: color }}
                           onClick={() => handleColorClick(color)}
@@ -186,6 +213,7 @@ const DetailProduct = () => {
                 </QuantityButton>
                 <QuantityDisplay>{quantity}</QuantityDisplay>
                 <QuantityButton
+                  // tabahankan code untuk membatasi penambahan stock melebihi batas
                   onClick={() => handleQuantityChange(quantity + 1)}
                 >
                   +
@@ -214,7 +242,7 @@ const DetailProduct = () => {
               </div>
               <button
                 className="text-sm cursor-pointer bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-700"
-                onClick={() => handleAddToCart()}
+                onClick={() => handleAddToCart(product === 0)}
               >
                 Add
               </button>
@@ -226,7 +254,7 @@ const DetailProduct = () => {
         </>
       )}
 
-      <Footer background={"bg-white"} />
+      <Footer background={'bg-white'} />
     </AnimationRevealPage>
   );
 };

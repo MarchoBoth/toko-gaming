@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import Product from "../products/Product";
-import "./gridview.css";
+import React, { useState } from 'react';
+import Product from '../products/Product';
+import './gridview.css';
 
 const GridView = ({ products }) => {
   const productsPerPage = 6;
@@ -27,7 +27,7 @@ const GridView = ({ products }) => {
           return (
             <Product
               key={item.id}
-              image={item.image}
+              image={item.imageSrc}
               name={item.name}
               id={item.id}
               price={item.price}

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { formatPrice } from "../../helpers/helpers";
-import "./listview.css";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { formatPrice } from '../../helpers/helpers';
+import './listview.css';
+import { Link } from 'react-router-dom';
 
 const ListView = ({ products }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +28,7 @@ const ListView = ({ products }) => {
     <section>
       {currentProducts.map((item) => (
         <article key={item.id} className="flex pb-10 ">
-          <img src={item.image} className="w-[250px] h-[150px]" alt=""></img>
+          <img src={item.imageSrc} className="w-[250px] h-[150px]" alt=""></img>
           <div className="my-auto ml-10">
             <p className="text-2xl font-bold text-[#102a42]">{item.name}</p>
             <p className="text-[#b99179]">{formatPrice(item.price)}</p>

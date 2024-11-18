@@ -51,7 +51,7 @@ const Card = tw(
 
 const CardButton = tw(
   PrimaryButtonBase
-)`text-sm cursor-pointer absolute bottom-0 left-0 right-0 mx-auto`;
+)`text-sm cursor-pointer absolute bottom-0 left-0 right-0 mx-auto bg-red-500 hover:bg-green-200`;
 const CardImageContainer = styled.div`
   ${(props) =>
     css`
@@ -132,10 +132,10 @@ export default ({ heading = 'Checkout our Products' }) => {
 
       // Berikan validasi jika stock habis
 
-      if (items[selectedItem.name]) {
+      if (items[selectedItem.title]) {
         updateItemQuantity(
           selectedItem.id,
-          Number(items[selectedItem.name].quantity) + quantityNumber
+          Number(items[selectedItem.title].quantity) + quantityNumber
         );
       } else {
         addItem(selectedItem, quantityNumber);
@@ -145,7 +145,7 @@ export default ({ heading = 'Checkout our Products' }) => {
       closeModal();
 
       toast.success(
-        `Added ${quantityNumber} ${selectedItem.name}(s) to the cart`,
+        `Added ${quantityNumber} ${selectedItem.title}(s) to the cart`,
         {
           position: 'top-center',
           autoClose: 3000,
@@ -226,7 +226,7 @@ export default ({ heading = 'Checkout our Products' }) => {
           <ModalContainer>
             <ModalContent>
               <h2 tw="text-2xl font-semibold mb-4">
-                Select Quantity for {selectedItem.name}
+                Select Quantity for {selectedItem.title}
               </h2>
               <QuantityControl>
                 <QuantityButton

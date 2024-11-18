@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import tw from 'twin.macro';
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import { ReactComponent as MenuIcon } from 'feather-icons/dist/icons/menu.svg';
 import { ReactComponent as CloseIcon } from 'feather-icons/dist/icons/x.svg';
 import { useCart } from 'react-use-cart';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'context/AuthProvider.js';
 
 const Header = tw.header`
   flex justify-between items-center
@@ -55,7 +57,7 @@ export const MobileNavLinks = motion(styled.div`
 `);
 
 export const DesktopNavLinks = tw.nav`
-  hidden lg:flex flex-1 justify-between items-center
+  hidden lg:flex flex-1 justify-between items-center 
 `;
 const CartContainer = styled.div`
   ${tw`flex items-center relative `}
@@ -91,6 +93,12 @@ export default ({
    */
 
   const { totalItems } = useCart();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { logout } = useAuth();
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   //  TODO
   //  1.Panggil local storage user simpan didalam variabel user
@@ -122,10 +130,27 @@ export default ({
           </CartContainer>
         </Link>
       </NavLink>
-
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">
-        <Link to={'/login'}>Login</Link>
-      </PrimaryLink>
+      {user ? (
+        <div className="mr-4 pb-1 my-2 relative z-20">
+          <p onClick={handleDropdownToggle} className="cursor-pointer">
+            {user.name}
+          </p>
+          {isDropdownOpen && (
+            <div className="absolute top-full right-0 mt-1 bg-white border rounded-md shadow-md">
+              <button
+                onClick={logout}
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">
+          <Link to={'/login'}>Login</Link>
+        </PrimaryLink>
+      )}
     </NavLinks>,
   ];
 
