@@ -93,19 +93,18 @@ export default ({ heading = 'Checkout our Products' }) => {
   ]);
   const [activeTab, setActiveTab] = useState('Best Sellers');
   const { addItem, updateItemQuantity, items } = useCart();
-  // const { products } = useProductsContext();
-  const products = data;
+  const { product, getProductById, products } = useProductsContext();
 
   const tabs = {
     'Best Sellers': products
       .sort((a, b) => b.stars - a.stars) // Sort by stars in descending order
       .slice(0, 8), // Get the top 8 items
     'PC Rakitan': products.filter(
-      (product) => product.category === 'PC Rakitan'
+      (product) => product.category.name === 'PC Rakitan'
     ),
-    Laptop: products.filter((product) => product.category === 'Laptop'),
+    Laptop: products.filter((product) => product.category.name === 'Laptop'),
     'Gaming Acc': products.filter(
-      (product) => product.category === 'Gaming Acc'
+      (product) => product.category.name === 'Gaming Acc'
     ),
   };
 
@@ -206,7 +205,7 @@ export default ({ heading = 'Checkout our Products' }) => {
                 >
                   <Link to={`/detail-product/${card.id}`}>
                     <CardImageContainer
-                      image={card.imageSrc}
+                      image={`https://pkdlvjkjcznmtmivzkqc.supabase.co/storage/v1/object/public/images/${card.images[0]}`}
                       className="flex items-center justify-center"
                     />
                   </Link>

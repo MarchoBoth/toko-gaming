@@ -27,7 +27,7 @@ const GridView = ({ products }) => {
           return (
             <Product
               key={item.id}
-              image={item.imageSrc}
+              image={`https://pkdlvjkjcznmtmivzkqc.supabase.co/storage/v1/object/public/images/${item.images[0]}`}
               name={item.name}
               id={item.id}
               price={item.price}

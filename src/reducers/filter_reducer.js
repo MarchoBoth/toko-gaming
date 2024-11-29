@@ -7,7 +7,7 @@ import {
   UPDATE_FILTERS,
   FILTER_PRODUCTS,
   CLEAR_FILTERS,
-} from "../actions";
+} from '../actions';
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
@@ -32,7 +32,7 @@ const filter_reducer = (state, action) => {
   if (action.type === SORT_PRODUCTS) {
     const { sort, filtered_products } = state;
     let tempProducts = [];
-    if (sort === "price-lowest") {
+    if (sort === 'price-lowest') {
       tempProducts = filtered_products.sort((a, b) => {
         if (a.price < b.price) {
           return -1;
@@ -43,7 +43,7 @@ const filter_reducer = (state, action) => {
         return 0;
       });
     }
-    if (sort === "price-highest") {
+    if (sort === 'price-highest') {
       tempProducts = filtered_products.sort((a, b) => {
         if (a.price > b.price) {
           return -1;
@@ -54,12 +54,12 @@ const filter_reducer = (state, action) => {
         return 0;
       });
     }
-    if (sort === "name-a") {
+    if (sort === 'name-a') {
       tempProducts = filtered_products.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
     }
-    if (sort === "name-z") {
+    if (sort === 'name-z') {
       tempProducts = filtered_products.sort((a, b) => {
         return b.name.localeCompare(a.name);
       });
@@ -80,17 +80,17 @@ const filter_reducer = (state, action) => {
         product.name.toLowerCase().startsWith(text)
       );
     }
-    if (category !== "all") {
+    if (category !== 'all') {
       tempProducts = tempProducts.filter(
-        (product) => product.category === category
+        (product) => product.category.name === category
       );
     }
-    if (company !== "all") {
+    if (company !== 'all') {
       tempProducts = tempProducts.filter(
         (product) => product.company === company
       );
     }
-    if (color !== "all") {
+    if (color !== 'all') {
       tempProducts = tempProducts.filter((product) =>
         product.colors.find((c) => c === color)
       );
@@ -111,10 +111,10 @@ const filter_reducer = (state, action) => {
       ...state,
       filters: {
         ...state.filters,
-        text: "",
-        company: "all",
-        category: "all",
-        color: "all",
+        text: '',
+        company: 'all',
+        category: 'all',
+        color: 'all',
         price: state.filters.max_price,
         shipping: false,
       },

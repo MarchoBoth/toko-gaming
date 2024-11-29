@@ -8,15 +8,13 @@ export const ProductsProvider = ({ children }) => {
   const [product, setProduct] = useState([]);
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(
-        'https://65cc9d71dd519126b83f161f.mockapi.io/api/v1/products'
-      );
+      const response = await axios.get('http://localhost:3001/api/product');
 
       // Memotong array hasil response menjadi 14 data
-      const limitedData = response.data.slice(0, 14);
-
+      // const limitedData = response.data.slice(0, 14);
+      console.log(response.data.data);
       // Menetapkan data yang telah dipotong ke state
-      setProducts(data);
+      setProducts(response.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -24,9 +22,7 @@ export const ProductsProvider = ({ children }) => {
   // belum dipakai karna masih menggunakan data di utuls bukan data dari API
   const getProductById = async (id) => {
     try {
-      const response = await axios.get(
-        `https://65cc9d71dd519126b83f161f.mockapi.io/api/v1/products/${id}`
-      );
+      const response = await axios.get(`http://localhost:3001/product/${id}`);
 
       // Memotong array hasil response menjadi 14 data
       setProduct(response.data);

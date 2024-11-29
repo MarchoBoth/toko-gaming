@@ -1,8 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { useFilterContext } from "../context/filter_context";
-import { getUniqueValues, formatPrice } from "../helpers/helpers";
-import { FaCheck } from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useFilterContext } from '../context/filter_context';
+import { getUniqueValues, formatPrice } from '../helpers/helpers';
+import { FaCheck } from 'react-icons/fa';
+
+import axios from 'axios';
 
 const Filters = () => {
   const {
@@ -20,12 +22,37 @@ const Filters = () => {
     all_products,
     clearFilters,
   } = useFilterContext();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [categories, setCategories] = useState([]);
+  const getCategory = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/categories`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const category = response.data.data.map((item) => item.name);
+      setCategories(['all', ...category]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const categories = getUniqueValues(all_products, "category");
-  const companies = getUniqueValues(all_products, "company");
-  const colors = getUniqueValues(all_products, "colors");
+  useEffect(() => {
+    getCategory();
+  }, []);
+  // const categories = getUniqueValues(all_products, "category");
+  const companies = getUniqueValues(all_products, 'company');
+  const colors = getUniqueValues(all_products, 'colors');
 
-  console.log("categories", categories);
+  // const getCategory = (data) => {
+  //   let unique = data.map((item) => item.category.name);
+  //   return ['all', ...new Set(unique)];
+  // };
+
+  // const categories = getCategory(all_products);
+
+  console.log('categories', categories);
   return (
     <Wrapper>
       <div className="content">
@@ -55,7 +82,7 @@ const Filters = () => {
                       type="button"
                       name="category"
                       className={`${
-                        category === c.toLowerCase() ? "active" : null
+                        category === c.toLowerCase() ? 'active' : null
                       }`}
                     >
                       {c}
@@ -89,7 +116,7 @@ const Filters = () => {
             <h5>colors</h5>
             <div className="colors">
               {colors.map((c, index) => {
-                if (c === "all") {
+                if (c === 'all') {
                   return (
                     <button
                       key={index}
@@ -97,7 +124,7 @@ const Filters = () => {
                       onClick={updateFilters}
                       data-color="all"
                       className={`${
-                        color === "all" ? "all-btn active" : "all-btn"
+                        color === 'all' ? 'all-btn active' : 'all-btn'
                       }`}
                     >
                       all
@@ -110,7 +137,7 @@ const Filters = () => {
                     name="color"
                     style={{ background: c }}
                     className={`${
-                      color === c ? "color-btn active" : "color-btn"
+                      color === c ? 'color-btn active' : 'color-btn'
                     }`}
                     data-color={c}
                     onClick={updateFilters}

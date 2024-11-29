@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import React, { createContext, useContext, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
 
@@ -10,12 +11,12 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const navigation = useNavigate();
   const location = useLocation();
-  const redirectPath = location.state?.path || "/";
+  const redirectPath = location.state?.path || '/';
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     permissions: [],
-    role: "",
+    role: '',
   });
 
   const dataUser = {
@@ -29,22 +30,22 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/auth/login`,
+        `http://localhost:3001/api/auth/customer`,
         dataUser
       );
 
       const user = response.data;
 
       navigation(redirectPath, { replace: true });
-      localStorage.setItem("user", JSON.stringify(user));
-      alert("Login Berhasil, Selamat Datang Admin");
-      navigation("/");
+      localStorage.setItem('user', JSON.stringify(user));
+      toast.success('Login Berhasil');
+      navigation('/');
       setUser(user);
     } catch (error) {
       console.error(error);
-      alert(
+      toast.error(
         error?.response?.data?.error ||
-          "Login Gagal, Terjadi Kesalahan Pada Server"
+          'Login Gagal, Terjadi Kesalahan Pada Server'
       );
       setError(error);
     } finally {
@@ -54,8 +55,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
-    navigation("/");
+    localStorage.removeItem('user');
+    navigation('/');
   };
 
   return (
