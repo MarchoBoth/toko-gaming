@@ -44,6 +44,7 @@ const Filters = () => {
   // const categories = getUniqueValues(all_products, "category");
   const companies = getUniqueValues(all_products, 'company');
   const colors = getUniqueValues(all_products, 'colors');
+  console.log('colors:', colors);
 
   // const getCategory = (data) => {
   //   let unique = data.map((item) => item.category.name);
@@ -135,20 +136,20 @@ const Filters = () => {
                   <button
                     key={index}
                     name="color"
-                    style={{ background: c }}
+                    style={{ background: c.color }}
                     className={`${
                       color === c ? 'color-btn active' : 'color-btn'
                     }`}
-                    data-color={c}
+                    data-color={c.color}
                     onClick={updateFilters}
                   >
-                    {color === c ? <FaCheck /> : null}
+                    {color === c.color ? <FaCheck /> : null}
                   </button>
                 );
               })}
             </div>
           </div>
-          {/* end of colors */}
+          {/* {/ end of colors */}
           {/* price */}
           <div className="form-control">
             <h5>price</h5>

@@ -22,8 +22,13 @@ const DetailProduct = () => {
   const [showModal, setShowModal] = useState(false);
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [maxQuantity, setMaxQuantity] = useState(10);
+  const [selectedColorId, setSelectedColorId] = useState(null);
+  console.log('product:', product);
 
   const handleColorClick = (color) => {
+    setQuantity(1);
     setSelectedColor(color);
   };
   const changeMainImage = (index) => {
@@ -53,38 +58,74 @@ const DetailProduct = () => {
   const CancelButton = tw.button`text-sm mt-4 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md ml-5 focus:outline-none cursor-pointer`;
 
   const handleAddToCart = () => {
-    // if (selectedItem && selectedColor) {
-    //   // Lengkapi code berikut
-    //   addItem(selectedItem, quantity);
-    //   toast.success(`${selectedItem.item.name} add to cart`);
-    //   setShowModal(false);
-    // } else {
-    //   toast.error(`Sorry stock avaible ${selectedItem.stock} only`);
-    // }
-    if (selectedItem) {
-      // Cek apakah produk memiliki warna
-      if (selectedItem.colors.length > 0 && !selectedColor) {
-        toast.error('Please select a color.');
-      }
-      // Cek apakah kuantitas melebihi stok
-      else if (quantity > selectedItem.stock) {
-        toast.error('Quantity exceeds available stock.');
+    // cari itemnya udah ada atau belum di cart, kalau ada tambahkan quantitiy yang ada di keranjang dan quantity yang akan masuk ke kerajang
+    // jika hasilnya lebih besar dari max quantity di keranjang maka tampilkan error
+    // buat jika item yang dimasukkan memiliki warna yang berbeda maka item pada cart harus tampil berdasarkan warna yang dipilih
+    //ketika kita add, menambahkan property baru. kita simpen idnya ke property baru
+    //jadi semua product akan unique berdasarkan warnanya.
+    // jangan buat datanya ketumpuk
+    if (!selectedItem) {
+      toast.error('Sorry, product is unavailable.');
+      return;
+    }
+
+    // Validasi jika produk memiliki variasi warna
+    if (selectedItem.colors.length > 0 && !selectedColor) {
+      toast.error('Please select a color.');
+      return;
+    }
+
+    // Cari produk di keranjang
+    const existingItem = items.find(
+      (item) =>
+        item.id === selectedItem.id &&
+        (!selectedColor || item.color === selectedColor)
+    );
+    if (existingItem) {
+      const totalQuantity = existingItem.quantity + quantity;
+
+      // Validasi kuantitas tidak melebihi stok maksimal
+      if (totalQuantity > maxQuantity) {
+        toast.error(
+          `Cannot add more items. Maximum quantity is ${maxQuantity}.`
+        );
+        return;
       } else {
-        // Jika tidak melebihi stok dan validasi warna lolos, tambahkan ke cart
-        addItem(selectedItem, quantity);
-        toast.success(`${selectedItem.name} added to cart`);
+        // Perbarui kuantitas di keranjang
+        updateItemQuantity(existingItem.id, totalQuantity);
+        toast.success(`${selectedItem.name} quantity updated in the cart.`);
         setShowModal(false);
       }
     } else {
-      toast.error(`Sorry, product is unavailable.`);
+      // Tambahkan produk baru ke keranjang
+      if (quantity > maxQuantity) {
+        toast.error(`Quantity exceeds available stock. Max: ${maxQuantity}`);
+      } else {
+        addItem(
+          {
+            ...selectedItem,
+            color: selectedColor, // Tambahkan warna yang dipilih
+            maxQuantity: maxQuantity,
+            id: `${selectedItem.id}-${selectedColor}`, //untuk membuat product dengan warna berbeda unique
+            trueId: selectedItem.id,
+            colorId: selectedColorId,
+            img: `${selectedItem.images[mainImageIndex]}`,
+            trueImg: selectedItem.images[mainImageIndex],
+          },
+          quantity
+        );
+        toast.success(`${selectedItem.name} added to the cart.`);
+        setShowModal(false);
+      }
     }
   };
 
+  //cek item apakah item udah ada di keranjang. jika ada jumlahkan quantity keranjang dan yg akan masuk ke keranjang , setelah dapat toal, jika hasil total lebih  banyak dari quantity, tampilkan eror
   useEffect(() => {
     // Your code here
-    // getProductById(id);
-    const findProduct = data.find((item) => item.id.toString() === id);
-    setProduct(findProduct);
+    getProductById(id);
+    // const findProduct = data.find((item) => item.id.toString() === id);
+    // setProduct(findProduct);
   }, [id]);
 
   const handleChangePrice = () => {
@@ -92,14 +133,46 @@ const DetailProduct = () => {
   };
 
   const handleQuantityChange = (newQuantity) => {
-    setQuantity(Math.max(1, Math.min(10, newQuantity))); // Ensure quantity is within the allowed range
+    //harus memilih warna terlebih dahulu
+    //cek quantity yang ada, jika masih ada maka handlequantitychange bisa dijalankan
+    //lalu cek quantity barang yang ada dan yang ada di cart.
+    //handle quantity change hanya bisa menambahkan quantity sesuai quantity yang tersedia.
+    //quantity yang tersedia adalah maxquantity di kurangi quantity di cart
+    if (!selectedColor) {
+      toast.warning('Please select a color first');
+      return;
+    }
+
+    // setQuantity(Math.max(1, Math.min(maxQuantity, newQuantity))); //hanya bisa menambahkan sesuai stock yang ada
+    // Cari item yang ada di keranjang berdasarkan ID dan warna
+    const existingItem = items.find(
+      (item) =>
+        item.id === product.id &&
+        (!selectedColor || item.color === selectedColor)
+    );
+
+    // Hitung stok yang tersedia: stok maksimal dikurangi jumlah di keranjang
+    const availableStock = maxQuantity - (existingItem?.quantity || 0);
+
+    if (newQuantity < 1) {
+      toast.warning('Quantity cannot be less than 1.');
+      setQuantity(1);
+      return;
+    }
+
+    if (newQuantity > availableStock) {
+      toast.error(`Stock is limited. Only ${availableStock} left.`);
+      setQuantity(availableStock);
+      return;
+    }
+
+    setQuantity(newQuantity); // Set kuantitas baru jika valid
   };
 
   useEffect(() => {
     const updatedPrice = handleChangePrice();
     setProduct((prevProduct) => ({ ...prevProduct, updatedPrice }));
   }, [quantity, product.price]);
-
   return (
     <AnimationRevealPage>
       <Header className={'mb-8'} />
@@ -117,7 +190,7 @@ const DetailProduct = () => {
               {Array.isArray(product.images) && product.images.length > 0 && (
                 <>
                   <ProductImage
-                    src={product.images[mainImageIndex]}
+                    src={`https://pkdlvjkjcznmtmivzkqc.supabase.co/storage/v1/object/public/images/${product.images[mainImageIndex]}`}
                     alt={product.name}
                   />
                 </>
@@ -127,7 +200,7 @@ const DetailProduct = () => {
                   {product.images.map((image, index) => (
                     <img
                       key={index}
-                      src={image}
+                      src={`https://pkdlvjkjcznmtmivzkqc.supabase.co/storage/v1/object/public/images/${product.images[index]}`}
                       alt={`${product.name} - ${index + 1}`}
                       className={`h-20 w-20 rounded cursor-pointer ${
                         index === mainImageIndex
@@ -144,7 +217,7 @@ const DetailProduct = () => {
             <ProductInfo>
               <Title>{product.name}</Title>
               <RatingReviews>
-                <div className="flex items-center justify-center md:justify-normal">
+                {/* <div className="flex items-center justify-center md:justify-normal">
                   {product.stars}
                   <span className=" flex mx-2">
                     {[...Array(5)].map((_, index) => {
@@ -168,13 +241,13 @@ const DetailProduct = () => {
                     })}
                   </span>
                   | Reviews:
-                </div>
+                </div> */}
               </RatingReviews>
               <Description>Deskripsi</Description>
               <div>
-                <p className="mb-2">Available : </p>
-                <p className="mb-2">SKU : </p>
-                <p className="mb-2">Company :</p>
+                <p className="mb-2">Available : {product.description}</p>
+                {/* <p className="mb-2">SKU : </p> */}
+                <p className="mb-2">Company : {product.company}</p>
                 <hr className="my-4 h-1 border bg-gray-500" />
 
                 <div className="flex">
@@ -185,14 +258,17 @@ const DetailProduct = () => {
                         <div
                           key={index}
                           className={`relative w-8 h-8 rounded-full cursor-pointer border-2 ${
-                            selectedColor === color
+                            selectedColor === color.color
                               ? 'border-red-500'
                               : 'border-transparent'
                           }`}
-                          style={{ backgroundColor: color }}
-                          onClick={() => handleColorClick(color)}
+                          style={{ backgroundColor: color.color }}
+                          onClick={() => {
+                            handleColorClick(color.color);
+                            setSelectedColorId(color.id);
+                          }}
                         >
-                          {selectedColor === color && (
+                          {selectedColor === color.color && (
                             <FaCheck
                               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
                               size={16}

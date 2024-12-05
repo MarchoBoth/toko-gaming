@@ -6,8 +6,10 @@ const ProductsContext = React.createContext();
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(false);
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response = await axios.get('http://localhost:3001/api/product');
 
       // Memotong array hasil response menjadi 14 data
@@ -15,17 +17,21 @@ export const ProductsProvider = ({ children }) => {
       console.log(response.data.data);
       // Menetapkan data yang telah dipotong ke state
       setProducts(response.data.data);
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
   // belum dipakai karna masih menggunakan data di utuls bukan data dari API
   const getProductById = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:3001/product/${id}`);
+      const response = await axios.get(
+        `http://localhost:3001/api/product/${id}`
+      );
 
       // Memotong array hasil response menjadi 14 data
-      setProduct(response.data);
+      setProduct(response.data.data);
       // Your code
     } catch (err) {
       // Your code
