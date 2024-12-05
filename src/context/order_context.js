@@ -2,81 +2,88 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCart } from 'react-use-cart';
 
 const OrdersContext = React.createContext();
 
 export const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState([]);
+  const { items, emptyCart } = useCart();
   const [formData, setFormData] = useState({
     address: '',
     city: '',
     postalCode: '',
     country: '',
-    status: '',
-    userId: null,
+    status: 'PENDING',
     items: [],
   });
+
   const user = JSON.parse(localStorage.getItem('user'));
+  // TODO
+  // 1. Lengkapi fungsi getOrdersById
+  // 2. Buatkan fungsi createOrder
   const getOrdersByUserId = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/order/`, {
+      // Your code here
+
+      const response = await axios.get(`http://localhost:3001/api/orders`, {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `${user.token}`,
         },
       });
+      console.log('response', response.data.data);
       setOrders(response.data.data);
     } catch (err) {
-      toast.error('Error getting orders', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // Your code here
       console.log(err);
     }
   };
 
+  // Buat fungsi create order disni
   const createOrder = async () => {
+    const url = `http://localhost:3001/api/orders`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`, // Pastikan menggunakan "Bearer" jika diperlukan
+        'Content-Type': 'application/json', // Header tambahan untuk format JSON
+      },
+    };
+    const body = {
+      ...formData, // Mengirim data form yang telah diisi
+    };
+    console.log('body', body);
+    console.log('formdata', formData);
+    console.log('Creating order...');
+
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/order',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await axios.post(url, body, config);
+      console.log('Order created successfully:', response.data.data);
 
-      setOrder(response.data.data);
+      // Notifikasi sukses
+      toast.success(response.data.message);
 
-      toast.success('Order created successfully!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+      // Update state untuk daftar pesanan
+      setOrders((prevOrders) => [...prevOrders, response.data.data]);
+
+      // Reset form data setelah berhasil
+      setFormData({
+        address: '',
+        city: '',
+        postalCode: '',
+        country: '',
+        status: '',
+        items: [],
       });
-
-      return response.data;
-    } catch (err) {
-      toast.error('Error creating order', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log(err);
-      throw err;
+    } catch (error) {
+      // Menangkap error dan memberikan informasi
+      if (error.response) {
+        console.error('Error Response:', error.response.data);
+        toast.error(error.response.data.message || 'Failed to create order.');
+      } else {
+        console.error('Error:', error.message);
+        toast.error('An error occurred. Please try again.');
+      }
     }
   };
 
@@ -88,15 +95,16 @@ export const OrderProvider = ({ children }) => {
         order,
         formData,
         setFormData,
-        getOrdersByUserId,
+        // panggil fungsinya disini
         createOrder,
+        getOrdersByUserId,
       }}
     >
       {children}
     </OrdersContext.Provider>
   );
 };
-
+// make sure use
 export const useOrderContext = () => {
   return useContext(OrdersContext);
 };

@@ -23,7 +23,7 @@ const DetailProduct = () => {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [maxQuantity, setMaxQuantity] = useState(10);
+  const [maxQuantity, setMaxQuantity] = useState(0);
   const [selectedColorId, setSelectedColorId] = useState(null);
   console.log('product:', product);
 
@@ -76,47 +76,48 @@ const DetailProduct = () => {
     }
 
     // Cari produk di keranjang
-    const existingItem = items.find(
-      (item) =>
-        item.id === selectedItem.id &&
-        (!selectedColor || item.color === selectedColor)
-    );
+    const uniqueId = `${selectedItem.id}-${selectedColor || 'default'}`;
+
+    // Cari produk di keranjang berdasarkan ID unik
+    const existingItem = items.find((item) => item.id === uniqueId);
+
     if (existingItem) {
+      // Hitung total kuantitas jika item sudah ada di keranjang
       const totalQuantity = existingItem.quantity + quantity;
 
       // Validasi kuantitas tidak melebihi stok maksimal
-      if (totalQuantity > maxQuantity) {
+      if (totalQuantity > existingItem.maxQuantity) {
         toast.error(
-          `Cannot add more items. Maximum quantity is ${maxQuantity}.`
+          `Cannot add more items. Maximum quantity is ${existingItem.maxQuantity}.`
         );
         return;
-      } else {
-        // Perbarui kuantitas di keranjang
-        updateItemQuantity(existingItem.id, totalQuantity);
-        toast.success(`${selectedItem.name} quantity updated in the cart.`);
-        setShowModal(false);
       }
+
+      // Perbarui kuantitas di keranjang
+      updateItemQuantity(uniqueId, totalQuantity);
+      toast.success(`${selectedItem.name} quantity updated in the cart.`);
+      setShowModal(false);
     } else {
-      // Tambahkan produk baru ke keranjang
+      // Validasi kuantitas untuk produk baru
       if (quantity > maxQuantity) {
         toast.error(`Quantity exceeds available stock. Max: ${maxQuantity}`);
-      } else {
-        addItem(
-          {
-            ...selectedItem,
-            color: selectedColor, // Tambahkan warna yang dipilih
-            maxQuantity: maxQuantity,
-            id: `${selectedItem.id}-${selectedColor}`, //untuk membuat product dengan warna berbeda unique
-            trueId: selectedItem.id,
-            colorId: selectedColorId,
-            img: `${selectedItem.images[mainImageIndex]}`,
-            trueImg: selectedItem.images[mainImageIndex],
-          },
-          quantity
-        );
-        toast.success(`${selectedItem.name} added to the cart.`);
-        setShowModal(false);
+        return;
       }
+
+      // Tambahkan produk baru ke keranjang
+      addItem(
+        {
+          ...selectedItem,
+          color: selectedColor, // Warna yang dipilih
+          maxQuantity: maxQuantity, // Stok maksimal
+          id: uniqueId, // ID unik berdasarkan warna
+          trueId: selectedItem.id, // ID asli produk
+          colorId: selectedColorId, // ID warna
+        },
+        quantity
+      );
+      toast.success(`${selectedItem.name} added to the cart.`);
+      setShowModal(false);
     }
   };
 
@@ -265,6 +266,7 @@ const DetailProduct = () => {
                           style={{ backgroundColor: color.color }}
                           onClick={() => {
                             handleColorClick(color.color);
+                            setMaxQuantity(color.quantity);
                             setSelectedColorId(color.id);
                           }}
                         >
