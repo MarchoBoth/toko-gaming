@@ -41,9 +41,9 @@ const Checkout = () => {
 
   useEffect(() => {
     const updateOrderItems = items.map((item) => ({
-      product_id: item.trueId,
+      productId: item.trueId,
       quantity: parseFloat(item.quantity),
-      color_id: item.color_id,
+      colorId: item.colorId,
     }));
     setFormData((prevState) => ({
       ...prevState,
