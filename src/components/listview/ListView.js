@@ -25,28 +25,58 @@ const ListView = ({ products }) => {
   };
 
   return (
-    <section>
+    <section className="container mx-auto px-4">
       {currentProducts.map((item) => (
-        <article key={item.id} className="flex pb-10 ">
-          <img src={item.imageSrc} className="w-[250px] h-[150px]" alt=""></img>
-          <div className="my-auto ml-10">
-            <p className="text-2xl font-bold text-[#102a42]">{item.name}</p>
-            <p className="text-[#b99179]">{formatPrice(item.price)}</p>
-            <p className="mt-2 mb-3 text-[#102a42]">{item.description}</p>
+        <article
+          key={item.id}
+          className="flex flex-col md:flex-row gap-8 pb-10 border-b border-gray-200 mb-8 hover:shadow-xl transition-all duration-300 p-6 rounded-lg group bg-white"
+        >
+          <div className="relative w-full md:w-[300px] h-[250px] md:h-[200px] overflow-hidden rounded-xl">
+            <img
+              src={`https://pkdlvjkjcznmtmivzkqc.supabase.co/storage/v1/object/public/images/${item.images[0]}`}
+              className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+              alt={item.name}
+              loading="lazy"
+            />
+          </div>
+
+          <div className="flex-1 flex flex-col justify-center space-y-4">
+            <h2 className="text-2xl font-bold text-gray-900 hover:text-blue-500 transition-colors">
+              {item.name}
+            </h2>
+            <p className="text-blue-500 text-xl font-semibold">
+              {formatPrice(item.price)}
+            </p>
+            <p className="text-gray-400 line-clamp-3 max-w-2xl">
+              {item.description}
+            </p>
             <Link
               to={`/detail-product/${item.id}`}
-              className="bg-[#676767] text-white text-[10px] py-1 px-2 rounded"
+              className="bg-blue-500 text-white text-sm font-medium py-2.5 px-6 rounded-md hover:bg-blue-700 transition-colors duration-300 w-fit"
             >
-              DETAILS
+              Details
             </Link>
           </div>
         </article>
       ))}
-      <div className="flex justify-between mt-4">
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+
+      <div className="flex justify-center gap-4 mt-8 mb-6">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md 
+                   disabled:opacity-50 disabled:cursor-not-allowed 
+                   hover:bg-blue-700 transition-colors"
+        >
           Previous
         </button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md 
+                   disabled:opacity-50 disabled:cursor-not-allowed 
+                   hover:bg-blue-700 transition-colors"
+        >
           Next
         </button>
       </div>

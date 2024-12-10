@@ -19,7 +19,7 @@ const Orders = () => {
 
   return (
     <AnimationRevealPage>
-      <Header className="mb-8" />
+      <Header />
 
       <Container>
         <Content>

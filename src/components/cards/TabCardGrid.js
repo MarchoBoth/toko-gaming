@@ -17,25 +17,25 @@ import { data } from 'helpers/utils';
 
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row`;
 const Header = tw(SectionHeading)``;
-const TabsControl = tw.div`flex flex-wrap bg-gray-200 px-2 py-2 rounded leading-none mt-12 xl:mt-0`;
+const TabsControl = tw.div`flex flex-wrap bg-gray-900 px-2 py-2 rounded leading-none mt-12 xl:mt-0`;
 
 const ModalContent = tw.div`bg-white p-8 rounded-lg text-center`;
 const QuantityControl = tw.div`flex items-center justify-center space-x-4 mb-4`;
 const QuantityButton = tw(PrimaryButtonBase)`text-lg font-bold`;
 const QuantityDisplay = tw.div`text-lg font-bold`;
 
-const ModalContainer = tw.div`fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50`;
+const ModalContainer = tw.div`fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 `;
 
 const CancelButton = tw(
   PrimaryButtonBase
 )`text-sm mt-4 bg-red-600 hocus:bg-red-700 ml-5`;
 
 const TabControl = styled.div`
-  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base w-1/2 sm:w-auto text-center`}
+  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-200 font-medium rounded-sm transition duration-300 text-sm sm:text-base w-1/2 sm:w-auto text-center`}
   &:hover {
-    ${tw`bg-gray-300 text-gray-700`}
+    ${tw`bg-gray-800 text-gray-200`}
   }
-  ${(props) => props.active && tw`bg-primary-500! text-gray-100!`}
+  ${(props) => props.active && tw`bg-blue-500! text-gray-200!`}
   }
 `;
 
@@ -43,15 +43,15 @@ const BuyNowButton = tw(PrimaryButtonBase)`text-sm cursor-pointer`;
 
 const TabContent = tw(
   motion.div
-)`mt-6 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12`;
-const CardContainer = tw.div`mt-10 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 sm:pr-10 md:pr-6 lg:pr-12  `;
+)`mt-6 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12 bg-gray-900`;
+const CardContainer = tw.div`mt-10 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 sm:pr-10 md:pr-6 lg:pr-12 bg-gray-900 `;
 const Card = tw(
   motion.a
-)`bg-gray-200 rounded-b block max-w-xs mx-auto sm:max-w-none sm:mx-0 relative`;
+)`bg-gray-900 rounded-b block max-w-xs mx-auto sm:max-w-none sm:mx-0 relative`;
 
 const CardButton = tw(
   PrimaryButtonBase
-)`text-sm cursor-pointer absolute bottom-0 left-0 right-0 mx-auto bg-red-500 hover:bg-green-200`;
+)`text-sm cursor-pointer absolute bottom-0 left-0 right-0 mx-auto bg-blue-500 hover:bg-blue-700`;
 const CardImageContainer = styled.div`
   ${(props) =>
     css`
@@ -75,10 +75,10 @@ const CardImageContainer = styled.div`
 `;
 
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
-  ${tw`pointer-events-none -z-20 absolute right-0 top-0 h-64 w-64 opacity-15 transform translate-x-2/3 -translate-y-12 text-pink-400`}
+  ${tw`pointer-events-none -z-20 absolute right-0 top-0 h-64 w-64 opacity-15 transform translate-x-2/3 -translate-y-12 text-gray-700`}
 `;
 const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
-  ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-80 w-80 opacity-15 transform -translate-x-2/3 text-primary-500`}
+  ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-80 w-80 opacity-15 transform -translate-x-2/3 text-blue-500`}
 `;
 
 export default ({ heading = 'Checkout our Products' }) => {
@@ -144,7 +144,7 @@ export default ({ heading = 'Checkout our Products' }) => {
       closeModal();
 
       toast.success(
-        `Added ${quantityNumber} ${selectedItem.title}(s) to the cart`,
+        `Added ${quantityNumber} ${selectedItem.name}(s) to the cart`,
         {
           position: 'top-center',
           autoClose: 3000,

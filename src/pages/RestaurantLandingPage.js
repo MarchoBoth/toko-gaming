@@ -64,7 +64,7 @@ export default () => {
         }
       />
       <Testimonial />
-      <Footer background={'bg-gray-200'} />
+      <Footer />
     </AnimationRevealPage>
   );
 };

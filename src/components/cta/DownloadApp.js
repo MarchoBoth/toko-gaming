@@ -15,8 +15,8 @@ import {
 import appleIconImageSrc from 'images/tokpedicon.jpg';
 import googlePlayIconImageSrc from 'images/shopeeicon.jpg';
 
-const Container = tw(ContainerBase)`bg-gray-900 -mx-8`;
-const Content = tw(ContentWithPaddingXl)``;
+const Container = tw(ContainerBase)``;
+const Content = tw(ContentWithPaddingXl)`bg-gray-900 `;
 const Row = tw.div`px-8 flex items-center relative z-10 flex-col lg:flex-row text-center lg:text-left justify-center`;
 
 const ColumnContainer = tw.div`max-w-2xl`;
