@@ -24,11 +24,15 @@ export const OrderProvider = ({ children }) => {
   console.log(localUser);
   const getOrdersByUserId = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/order`, {
-        headers: {
-          Authorization: `Bearer ${user?.token || localUser?.token}`,
-        },
-      });
+      const url = process.env.REACT_APP_API_URL;
+      const response = await axios.get(
+        `${url}/order`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token || localUser?.token}`,
+          },
+        }
+      );
       setOrders(response.data.data);
     } catch (err) {
       toast.error('Error getting orders', {
@@ -45,7 +49,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   const createOrder = async () => {
-    const url = `http://localhost:3001/api/order`;
+    const url =process.env.REACT_APP_API_URL;
     const config = {
       headers: {
         Authorization: `Bearer ${user?.token || localUser?.token}`,

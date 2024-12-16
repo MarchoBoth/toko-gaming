@@ -7,10 +7,13 @@ export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
+  const url = process.env.REACT_APP_API_URL;
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3001/api/product');
+        const response = await axios.get(
+          `${url}/product`
+      );
 
       // Memotong array hasil response menjadi 14 data
       // const limitedData = response.data.slice(0, 14);
@@ -27,7 +30,7 @@ export const ProductsProvider = ({ children }) => {
   const getProductById = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/product/${id}`
+        `${url}/product/${id}`
       );
 
       // Memotong array hasil response menjadi 14 data
