@@ -33,7 +33,7 @@ export default () => {
         heading={
           <>
             Dapatkan Komputer Terbaik di{' '}
-            <HighlightedText>AR.COM Techno Industry.</HighlightedText>
+            <HighlightedText>AR.COM Techno Industry</HighlightedText>
           </>
         }
         description={
