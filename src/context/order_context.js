@@ -52,7 +52,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   const createOrder = async () => {
-    const url = process.env.REACT_APP_API_URL + `/api/orders`;
+    const url = process.env.REACT_APP_API_URL+`/api/order`;
     const config = {
       headers: {
         Authorization: `Bearer ${user?.token || localUser?.token}`,
