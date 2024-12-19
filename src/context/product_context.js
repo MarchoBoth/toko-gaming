@@ -13,7 +13,7 @@ export const ProductsProvider = ({ children }) => {
       setLoading(true);
         const response = await axios.get(
           // `http://localhost:3001/api/products`
-          `${url}/product`
+          `${url}/api/product`
       );
 
       // Memotong array hasil response menjadi 14 data
@@ -32,7 +32,7 @@ export const ProductsProvider = ({ children }) => {
     try {
       const response = await axios.get(
         // `http://localhost:3001/api/products/${id}`
-        `${url}/product/${id}`
+        `${url}/api/product/${id}`
       );
 
       // Memotong array hasil response menjadi 14 data

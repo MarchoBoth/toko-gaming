@@ -29,7 +29,7 @@ export const OrderProvider = ({ children }) => {
         // const url = 'https://api-shop-ku.herokuapp.com';
         // const url = 'http://localhost:5000';
 
-        `${url}/order`,
+        `${url}/api/order`,
         {
           headers: {
             Authorization: `Bearer ${user?.token || localUser?.token}`,

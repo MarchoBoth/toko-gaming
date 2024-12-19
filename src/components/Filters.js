@@ -27,7 +27,7 @@ const Filters = () => {
   const getCategory = async () => {
     try {
       const url = process.env.REACT_APP_API_URL;
-      const response = await axios.get(`${url}/categories`, {
+      const response = await axios.get(`${url}/api/categories`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
