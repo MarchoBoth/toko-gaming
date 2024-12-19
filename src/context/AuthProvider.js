@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(
         // `${process.env.REACT_APP_API_URL}/auth/customer`,
-        `${url}/auth/customer`,
+        `${url}/api/auth/customer`,
         dataUser
       );
 
