@@ -12,6 +12,7 @@ export const ProductsProvider = ({ children }) => {
     try {
       setLoading(true);
         const response = await axios.get(
+          // `http://localhost:3001/api/products`
           `${url}/product`
       );
 
@@ -30,6 +31,7 @@ export const ProductsProvider = ({ children }) => {
   const getProductById = async (id) => {
     try {
       const response = await axios.get(
+        // `http://localhost:3001/api/products/${id}`
         `${url}/product/${id}`
       );
 

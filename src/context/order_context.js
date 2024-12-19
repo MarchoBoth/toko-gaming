@@ -26,6 +26,9 @@ export const OrderProvider = ({ children }) => {
     try {
       const url = process.env.REACT_APP_API_URL;
       const response = await axios.get(
+        // const url = 'https://api-shop-ku.herokuapp.com';
+        // const url = 'http://localhost:5000';
+
         `${url}/order`,
         {
           headers: {

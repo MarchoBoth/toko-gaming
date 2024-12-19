@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const navigation = useNavigate();
   const location = useLocation();
   const redirectPath = location.state?.path || '/';
+  
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -23,13 +24,16 @@ export const AuthProvider = ({ children }) => {
     email: form.email,
     password: form.password,
   };
+  
   const url = process.env.REACT_APP_API_URL;
+  // const url = 'https://ka-bootcamp-backend-green.vercel.app';
 
   const login = async () => {
     setLoading(true);
 
     try {
       const response = await axios.post(
+        // `${process.env.REACT_APP_API_URL}/auth/customer`,
         `${url}/auth/customer`,
         dataUser
       );
