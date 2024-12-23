@@ -85,6 +85,9 @@ export default ({ heading = 'Checkout our Products' }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [maxQuantity, setMaxQuantity] = useState(0);
+  const [selectedColorId, setSelectedColorId] = useState(null);
   const [tabsKeys, setTabsKeys] = useState([
     'Best Sellers',
     'PC Rakitan',
@@ -111,6 +114,9 @@ export default ({ heading = 'Checkout our Products' }) => {
   const openModal = (item) => {
     setSelectedItem(item);
     setQuantity(1);
+    setSelectedColor(null); // Reset selected color
+    setMaxQuantity(0);
+    setSelectedColorId(null);
     setShowModal(true);
   };
 
@@ -120,42 +126,66 @@ export default ({ heading = 'Checkout our Products' }) => {
 
   const handleCancel = () => {
     setQuantity(1);
+    setSelectedColor(null);
+    setMaxQuantity(0);
+    setSelectedColorId(null);
     closeModal();
+  };
+
+  const handleColorClick = (color) => {
+    setQuantity(1);
+    setSelectedColor(color.color);
+    setMaxQuantity(color.quantity);
+    setSelectedColorId(color.id);
   };
 
   const handleBuyNow = (e) => {
     e.preventDefault();
 
-    if (selectedItem) {
-      const quantityNumber = Number(quantity);
+    if (!selectedItem) {
+      toast.error('Sorry, product is unavailable.');
+      return;
+    }
 
-      // Berikan validasi jika stock habis
+    // Validasi warna harus dipilih jika produk memiliki variasi warna
+    if (selectedItem.colors && selectedItem.colors.length > 0 && !selectedColor) {
+      toast.error('Please select a color before adding to cart');
+      return;
+    }
 
-      if (items[selectedItem.title]) {
-        updateItemQuantity(
-          selectedItem.id,
-          Number(items[selectedItem.title].quantity) + quantityNumber
-        );
-      } else {
-        addItem(selectedItem, quantityNumber);
+    const uniqueId = `${selectedItem.id}-${selectedColor || 'default'}`;
+    const existingItem = items.find((item) => item.id === uniqueId);
+
+    if (existingItem) {
+      const totalQuantity = existingItem.quantity + quantity;
+
+      if (totalQuantity > maxQuantity) {
+        toast.error(`Cannot add more items. Maximum quantity available is ${maxQuantity}.`);
+        return;
       }
 
-      setQuantity(1);
-      closeModal();
+      updateItemQuantity(uniqueId, totalQuantity);
+      toast.success(`${selectedItem.name} quantity updated in cart`);
+    } else {
+      if (quantity > maxQuantity) {
+        toast.error(`Quantity exceeds available stock. Max: ${maxQuantity}`);
+        return;
+      }
 
-      toast.success(
-        `Added ${quantityNumber} ${selectedItem.name}(s) to the cart`,
+      addItem(
         {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
+          ...selectedItem,
+          color: selectedColor,
+          maxQuantity: maxQuantity,
+          id: uniqueId,
+          trueId: selectedItem.id,
+          colorId: selectedColorId,
+        },
+        quantity
       );
+      toast.success(`${selectedItem.name} with ${selectedColor} color added to cart`);
     }
+    closeModal();
   };
 
   return (
@@ -225,8 +255,36 @@ export default ({ heading = 'Checkout our Products' }) => {
           <ModalContainer>
             <ModalContent>
               <h2 tw="text-2xl font-semibold mb-4">
-                Select Quantity for {selectedItem.title}
+                {selectedItem.name}
               </h2>
+
+              {/* Color Selection */}
+              {selectedItem.colors && selectedItem.colors.length > 0 && (
+                <div tw="mb-4">
+                  <p tw="text-lg font-medium mb-2">Select Color:</p>
+                  <div tw="flex justify-center space-x-2">
+                    {selectedItem.colors.map((color, index) => (
+                      <div
+                        key={index}
+                        tw="relative w-8 h-8 rounded-full cursor-pointer border-2"
+                        style={{
+                          backgroundColor: color.color,
+                          // border: color.color === selectedColor ? '2px solid red' : 'none',
+                          borderColor: selectedColor === color.color ? '#EF4444' : 'transparent'
+                        }}
+                        onClick={() => handleColorClick(color)}
+                      >
+                        {selectedColor === color.color && (
+                          <span tw="absolute inset-0 flex items-center justify-center text-white">
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <QuantityControl>
                 <QuantityButton
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -235,7 +293,7 @@ export default ({ heading = 'Checkout our Products' }) => {
                 </QuantityButton>
                 <QuantityDisplay>{quantity}</QuantityDisplay>
                 <QuantityButton
-                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                  onClick={() => setQuantity(Math.min(maxQuantity || 10, quantity + 1))}
                 >
                   +
                 </QuantityButton>
