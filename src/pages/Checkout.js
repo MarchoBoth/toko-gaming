@@ -29,8 +29,11 @@ const Checkout = () => {
   };
 
   const handleCheckout = async () => {
-    const response = await createOrder();
-
+    await createOrder();
+    // Reset form fields manually
+    const formFields = ['name', 'address', 'city', 'postalcode', 'country'];
+    const resetData = formFields.reduce((acc, field) => ({ ...acc, [field]: '' }), {});
+    setFormData(prev => ({ ...prev, ...resetData }));
     emptyCart();
   };
   const calculateProductsTotal = () => {
