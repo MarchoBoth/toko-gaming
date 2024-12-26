@@ -12,7 +12,7 @@ const LoginPage = () => {
 
   const logoLinkUrl = "#";
   const illustrationImageSrc = illustration;
-  const headingText = "Sign In To Treact";
+  const headingText = "Sign In To Toko Komputer";
   const socialButtons = [
     {
       iconImageSrc: googleIconImageSrc,
@@ -45,23 +45,26 @@ const LoginPage = () => {
 
   return (
     <AnimationRevealPage>
-      <div className="min-h-screen bg-violet-700 text-white font-medium flex justify-center -m-8">
-        <div className="max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1">
+      <div className="min-h-screen bg-gray-900 text-gray-200 font-medium flex justify-center -m-8">
+        <div className="max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-gray-800 text-gray-200 shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <a href={logoLinkUrl}>
+            {/* <a href={logoLinkUrl}>
               <img src={logo} className="h-12 mx-auto" alt="Logo" />
-            </a>
+            </a> */}
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">
                 {headingText}
               </h1>
               <div className="w-full flex-1 mt-8">
-                <div className="flex flex-col items-center">
+                {/* <div className="flex flex-col items-center">
                   {socialButtons.map((socialButton, index) => (
                     <a
                       key={index}
+                      className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3
+                      bg-blue-500 text-gray-200 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:bg-blue-700 focus:shadow-outline mt-5"
                       href={socialButton.url}
-                      className="w-full max-w-xs font-semibold rounded-lg py-3 border text-gray-900 bg-gray-100 hover:bg-gray-200 hover:border-gray-400 flex items-center justify-center transition-all duration-300 focus:outline-none focus:shadow-outline text-sm mt-5 first:mt-0"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <span className="iconContainer">
                         <img
@@ -73,54 +76,54 @@ const LoginPage = () => {
                       <span className="text">{socialButton.text}</span>
                     </a>
                   ))}
-                </div>
-                <div className="my-12 border-b text-center relative">
-                  <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform -translate-y-1/2 absolute inset-x-0 top-1/2 bg-transparent">
+                </div> */}
+                <div className="my-12 border-b border-gray-700 text-center relative">
+                  <div className="leading-none px-2 inline-block text-sm text-gray-400 tracking-wide font-medium bg-gray-800 transform -translate-y-1/2 absolute inset-x-0 top-1/2">
                     Or Sign in with your e-mail
                   </div>
                 </div>
                 <form className="mx-auto max-w-xs" onSubmit={handleSubmit}>
                   <input
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-900 border border-gray-700 placeholder-gray-400 text-gray-200 focus:outline-none focus:border-gray-400 focus:bg-gray-800 transition-all"
                     type="email"
                     name="email"
+                    placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
-                    placeholder="Email"
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0"
                   />
                   <input
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-900 border border-gray-700 placeholder-gray-400 text-gray-200 focus:outline-none focus:border-gray-400 focus:bg-gray-800 mt-5 transition-all"
                     type="password"
                     name="password"
+                    placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
-                    placeholder="Password"
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                   />
                   <button
+                    className="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-200 w-full py-4 rounded-lg   flex items-center justify-center focus:shadow-outline focus:outline-none"
                     type="submit"
-                    className="mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
-                    <LoginIcon className="icon" />
-                    <span className="text">{submitButtonText}</span>
+                    <LoginIcon className="w-6 h-6 -ml-2" />
+                    <span className="ml-3">{submitButtonText}</span>
                   </button>
+                  {/* <div className="mt-6 text-xs text-gray-400 text-center">
+                    <a
+                      href={forgotPasswordUrl}
+                      className="border-b border-gray-400 border-dotted"
+                    >
+                      Forgot Password ?
+                    </a>
+                  </div> */}
+                  <p className="mt-8 text-center text-gray-400">
+                    Don't have an account?{" "}
+                    <a
+                      href={signupUrl}
+                      className="text-blue-500 hover:text-blue-700 font-bold"
+                    >
+                      Sign Up
+                    </a>
+                  </p>
                 </form>
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  <a
-                    href={forgotPasswordUrl}
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    Forgot Password ?
-                  </a>
-                </p>
-                <p className="mt-8 text-sm text-gray-600 text-center">
-                  Dont have an account?{" "}
-                  <a
-                    href={signupUrl}
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    Sign Up
-                  </a>
-                </p>
               </div>
             </div>
           </div>
