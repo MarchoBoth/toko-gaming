@@ -100,7 +100,7 @@ export default ({ heading = 'Checkout our Products' }) => {
 
   const tabs = {
     'Best Sellers': products
-      .sort((a, b) => b.stars - a.stars) // Sort by stars in descending order
+      // .sort((a, b) => b.stars - a.stars) // Sort by stars in descending order
       .slice(0, 8), // Get the top 8 items
     'PC Rakitan': products.filter(
       (product) => product.category.name === 'PC Rakitan'
